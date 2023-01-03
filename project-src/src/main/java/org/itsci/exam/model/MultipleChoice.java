@@ -16,7 +16,6 @@ public class MultipleChoice extends Question {
     private Set<Choice> choices;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="answer_id")
-    private Choice answer;
 
     public Choice getCorrectAnswer() {
         return correctAnswer;
@@ -32,13 +31,5 @@ public class MultipleChoice extends Question {
 
     public void setChoices(Set<Choice> choices) {
         this.choices = choices;
-    }
-
-    public Choice getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(Choice answer) {
-        this.answer = answer;
     }
 }

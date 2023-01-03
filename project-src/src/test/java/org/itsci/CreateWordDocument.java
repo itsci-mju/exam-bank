@@ -1,6 +1,9 @@
 package org.itsci;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
@@ -13,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CreateWordDocument {
-    public static void test() throws IOException {
+    public static void test() throws IOException, InvalidFormatException {
         int fontSize = 14;
         String term = "1";
         String year = "2566";
@@ -103,51 +106,146 @@ public class CreateWordDocument {
         run = paragraph.createRun();
         run.addBreak(BreakType.PAGE);
 
-        // Section 1
-        String cmdTxt = "ตอนที่ 1 จงเลือกคำตอบที่ถูกต้องจากตัวเลือก A-D เพียงหนึ่งคำตอบแล้วกากบาทลงในกระดาษคำตอบที่กำหนดให้:";
-        paragraph = document.createParagraph();
-        paragraph.setStyle("No1");
-        run = paragraph.createRun();
-        run.setText(cmdTxt);
-
-        cmdTxt = "ข้อใดคือโค้ดที่แสดงข้อความ “Hello World”";
-        paragraph = document.createParagraph();
-        paragraph.setStyle("question");
-        run = paragraph.createRun();
-        run.setText("1.");
-        run.addTab();
-        run.setText(cmdTxt);
-
-        String [] choices = new String[] {"A.", "include stdio.h", "int main() { printf(“Helloworld”); }"};
-        paragraph = document.createParagraph();
-        paragraph.setStyle("choice");
-        run = paragraph.createRun();
-        run.setText(choices[0]);
-        run.addTab();
-        run.setText(choices[1]);
-        run.addBreak();
-        run.setText(choices[2]);
-
-        choices = new String[] {"B.", "include stdio.h", "int main() { printf(“Helloworld”); }"};
-        paragraph = document.createParagraph();
-        paragraph.setStyle("choice");
-        run = paragraph.createRun();
-        run.setText(choices[0]);
-        run.addTab();
-        run.setText(choices[1]);
-        run.addBreak();
-        run.setText(choices[2]);
-
-//        B.	include <stdio.h>
-//        int main() { display(“Helloworld”); }
-//        C.	#include <stdio.h>
-//        int main() printf(“Helloworld”); return 0;
-//        D.	#include <stdio.h>
-//        int main() { printf(“Helloworld”); return 0; }
-
+        createSecction(document, "ตอนที่ 1 จงเลือกคำตอบที่ถูกต้องจากตัวเลือก A-D เพียงหนึ่งคำตอบแล้วกากบาทลงในกระดาษคำตอบที่กำหนดให้:");
+        createSecction(document, "ตอนที่ 2 จงเลือกคำตอบที่ถูกต้องจากตัวเลือก A-D เพียงหนึ่งคำตอบแล้วกากบาทลงในกระดาษคำตอบที่กำหนดให้:");
 
         document.write(new FileOutputStream("updated_document.docx"));
         document.close();
+    }
+
+    private static void createSecction(XWPFDocument document, String cmdTxt) throws IOException, InvalidFormatException {
+        XWPFParagraph paragraph = document.createParagraph();
+        paragraph.setStyle("No1");
+        XWPFRun run = paragraph.createRun();
+        run.setText(cmdTxt);
+
+        for (int i = 1; i < 5; i++) {
+            JSONArray ja = new JSONArray();
+            ja.put(createParagraphText("question", i + "."));
+            ja.put(createParagraphControl("question", "tab"));
+            ja.put(createParagraphText("question", "ข้อใดคือโค้ดที่แสดงข้อความ “Hello World”"));
+            JSONArray list = new JSONArray();
+            list.put(createParagraphText("code", "int i=97;"));
+            list.put(createParagraphControl("code", "break"));
+            list.put(createParagraphText("code", "float x=3.14;"));
+            list.put(createParagraphControl("code", "break"));
+            list.put(createParagraphText("code", "printf(\"My favorite numbers are %d and %f.\\n\", i, x);"));
+            ja.put(list);
+
+            String jsonString = ja.toString();
+            JSONArray jsonArray = new JSONArray(jsonString);
+
+            createMultipleQuestion(document, jsonArray);
+        }
+    }
+
+    private static JSONObject createParagraphText(String style, String text) {
+        JSONObject jo = new JSONObject();
+        jo.put("style", style);
+        jo.put("text", text);
+        return jo;
+    }
+
+    private static JSONObject createParagraphControl(String style, String control) {
+        JSONObject jo = new JSONObject();
+        jo.put("style", style);
+        jo.put("control", control);
+        return jo;
+    }
+
+    private static void createMultipleQuestion(XWPFDocument document, JSONArray questionArray) throws IOException, InvalidFormatException {
+        generateText(document, null, "", questionArray);
+
+        JSONArray choiceArray = new JSONArray();
+        choiceArray.put(createParagraphText("choice", "A."));
+        choiceArray.put(createParagraphControl("choice", "tab"));
+        choiceArray.put(createParagraphText("choice", "include stdio.h"));
+        choiceArray.put(createParagraphControl("choice", "break"));
+        choiceArray.put(createParagraphText("choice", "int main() { printf(“Helloworld”); }"));
+        generateText(document, null, "", choiceArray);
+
+        choiceArray = new JSONArray();
+        choiceArray.put(createParagraphText("choice", "B."));
+        choiceArray.put(createParagraphControl("choice", "tab"));
+        choiceArray.put(createParagraphText("choice", "include <stdio.h>"));
+        choiceArray.put(createParagraphControl("choice", "break"));
+        choiceArray.put(createParagraphText("choice", "int main() { display(“Helloworld”); }"));
+        generateText(document, null, "", choiceArray);
+
+        choiceArray = new JSONArray();
+        choiceArray.put(createParagraphText("choice", "C."));
+        choiceArray.put(createParagraphControl("choice", "tab"));
+        choiceArray.put(createParagraphText("choice", "#include <stdio.h>"));
+        choiceArray.put(createParagraphControl("choice", "break"));
+        choiceArray.put(createParagraphText("choice", "int main() { printf(“Helloworld”); return 0; }"));
+        generateText(document, null, "", choiceArray);
+
+        choiceArray = new JSONArray();
+        choiceArray.put(createParagraphText("choice", "D."));
+        choiceArray.put(createParagraphControl("choice", "tab"));
+        choiceArray.put(createParagraphText("choice", "#include <stdio.h>"));
+        choiceArray.put(createParagraphControl("choice", "break"));
+        choiceArray.put(createParagraphText("choice", "int main() { printf(“Helloworld”); return 0; }"));
+        generateText(document, null, "", choiceArray);
+    }
+
+    private static void generateText(XWPFDocument document, XWPFParagraph paragraph, String style, Object object) {
+        assert (style != null);
+
+        if (object instanceof JSONObject jsonObject) {
+            assert (paragraph != null);
+            insertObject(paragraph, jsonObject);
+        } else {
+            assert (object instanceof JSONArray);
+            JSONArray jsonArray = (JSONArray) object;
+            for (int i=0; i<jsonArray.length(); i++) {
+                Object subObject = jsonArray.get(i);
+                if (subObject instanceof JSONObject) {
+                    JSONObject jsonObject = (JSONObject) subObject;
+                    String curStyle = jsonObject.getString("style");
+                    if (paragraph == null || !style.equals(curStyle)) {
+                        paragraph = document.createParagraph();
+                        style = curStyle;
+                    }
+                    paragraph.setStyle(style);
+                    generateText(document, paragraph, style, jsonObject);
+                } else {
+                    generateText(document, paragraph, style, subObject);
+                }
+            }
+        }
+    }
+
+    private static void insertObject(XWPFParagraph paragraph, JSONObject jsonObject) {
+        XWPFRun run = paragraph.createRun();
+        if (jsonObject.has("text")) {
+            run.setText(jsonObject.getString("text"));
+        } else if (jsonObject.has("control")) {
+            String ctl = jsonObject.getString("control");
+            if ("tab".equals(ctl)) {
+                CTR ctr = run.getCTR();
+                ctr.addNewTab();
+            } else if ("break".equals(ctl)) {
+                run.addBreak();
+            }
+        }
+    }
+
+    private static void createMultipleChoice(XWPFDocument document, String choice, String[] choices) {
+        XWPFParagraph paragraph = document.createParagraph();
+        paragraph.setStyle("choice");
+        XWPFRun run = paragraph.createRun();
+
+        run.setText(choice);
+        run.addTab();
+
+        for (String text : choices) {
+            if ("break".equals(text)) {
+                run.addBreak();
+            } else {
+                run.setText(text);
+            }
+        }
     }
 
     private static void setParagraphText(XWPFTableCell cell, String text) {

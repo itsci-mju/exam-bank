@@ -1,11 +1,9 @@
 package org.itsci.exam.model;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.itsci.exam.model.Question;
-import org.itsci.exam.model.Subject;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.SortedSet;
 
 @Entity
 @Table(name = "exams")
@@ -24,7 +22,7 @@ public class Exam {
     private Subject subject;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn (name = "exam_id")
-    private Set<ExamSection> sections;
+    private SortedSet<ExamSection> sections;
 
     public long getId() {
         return id;
@@ -58,11 +56,11 @@ public class Exam {
         this.subject = subject;
     }
 
-    public Set<ExamSection> getSections() {
+    public SortedSet<ExamSection> getSections() {
         return sections;
     }
 
-    public void setSections(Set<ExamSection> sections) {
+    public void setSections(SortedSet<ExamSection> sections) {
         this.sections = sections;
     }
 }
