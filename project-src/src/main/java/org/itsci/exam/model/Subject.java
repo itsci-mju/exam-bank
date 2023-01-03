@@ -1,10 +1,10 @@
 package org.itsci.exam.model;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.itsci.exam.model.Chapter;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "subjects")
@@ -18,7 +18,8 @@ public class Subject {
     private String name;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn (name = "subject_id")
-    private Set<Chapter> chapters;
+    @OrderBy("name")
+    private SortedSet<Chapter> chapters = new TreeSet<>();
 
     public long getId() {
         return id;
@@ -36,11 +37,11 @@ public class Subject {
         this.name = name;
     }
 
-    public Set<Chapter> getChapters() {
+    public SortedSet<Chapter> getChapters() {
         return chapters;
     }
 
-    public void setChapters(Set<Chapter> chapters) {
+    public void setChapters(SortedSet<Chapter> chapters) {
         this.chapters = chapters;
     }
 }

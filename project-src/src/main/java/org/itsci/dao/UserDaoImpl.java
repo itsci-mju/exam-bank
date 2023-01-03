@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.itsci.model.Login;
+import org.itsci.model.Member;
 import org.itsci.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -49,7 +50,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteUser(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        User user = session.load(User.class, id);
+        User user = session.get(User.class, id);
         session.delete(user);
         session.flush() ;
     }

@@ -9,7 +9,8 @@
     <ul>
         <li><a href="${pageContext.request.contextPath}"><spring:message code="page.home" /></a></li>
         <security:authorize access="hasRole('ADMIN')">
-            <li><a href="${pageContext.request.contextPath}/system/member/list"><spring:message code="page.user"/> </a></li>
+            <li><a href="${pageContext.request.contextPath}/system/member/list"><spring:message code="page.user"/></a></li>
+            <li><a href="${pageContext.request.contextPath}/system/subject/list">Subject</a></li>
         </security:authorize>
         <security:authorize access="!isAuthenticated()">
             <li><a href="${pageContext.request.contextPath}/login"><spring:message code="page.login"/> </a></li>
