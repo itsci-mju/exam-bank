@@ -18,6 +18,9 @@ public class Question {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="chapter_id")
     private Chapter chapter;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="company_id")
+    private ExamSection examSection;
     private String level;
     private String status;
     private String question;
@@ -86,5 +89,13 @@ public class Question {
 
     public void setPoint(double point) {
         this.point = point;
+    }
+
+    public ExamSection getExamSection() {
+        return examSection;
+    }
+
+    public void setExamSection(ExamSection examSection) {
+        this.examSection = examSection;
     }
 }

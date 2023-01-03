@@ -16,12 +16,12 @@ public class Teacher extends User {
     @JoinTable(name = "teacher_own_exam",
             joinColumns= { @JoinColumn(name = "teacher_id")},
             inverseJoinColumns= { @JoinColumn(name = "exam_id")})
-//    private Set<Exam> exams;
-//    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-//    @JoinTable(name = "teacher_own_quiz",
-//            joinColumns= { @JoinColumn(name = "teacher_id")},
-//            inverseJoinColumns= { @JoinColumn(name = "quiz_id")})
-//    private Set<Quiz> quizs;
+    private Set<Exam> exams;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @JoinTable(name = "teacher_own_quiz",
+            joinColumns= { @JoinColumn(name = "teacher_id")},
+            inverseJoinColumns= { @JoinColumn(name = "quiz_id")})
+    private Set<Quiz> quizzes;
 
     public Set<Subject> getTeachs() {
         return teachs;
@@ -31,19 +31,19 @@ public class Teacher extends User {
         this.teachs = teachs;
     }
 
-//    public Set<Exam> getExams() {
-//        return exams;
-//    }
-//
-//    public void setExams(Set<Exam> exams) {
-//        this.exams = exams;
-//    }
-//
-//    public Set<Quiz> getQuizs() {
-//        return quizs;
-//    }
-//
-//    public void setQuizs(Set<Quiz> quizs) {
-//        this.quizs = quizs;
-//    }
+    public Set<Exam> getExams() {
+        return exams;
+    }
+
+    public void setExams(Set<Exam> exams) {
+        this.exams = exams;
+    }
+
+    public Set<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public void setQuizzes(Set<Quiz> quizzes) {
+        this.quizzes = quizzes;
+    }
 }

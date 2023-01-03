@@ -4,8 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
-//@Entity
-//@Table(name="answer_sheets")
+@Entity
+@Table(name="answer_sheets")
 public class AnswerSheet {
     @Id
     @Column(name = "id", nullable = false)

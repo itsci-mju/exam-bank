@@ -3,10 +3,12 @@ package org.itsci.exam.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class ExamSection implements Comparable<ExamSection> {
+@Table(name = "exam_sections")
+public class ExamSection {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +18,11 @@ public class ExamSection implements Comparable<ExamSection> {
     private int commandNo;
     @Column(length = 50, nullable = false, unique = true)
     private String commandText;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinTable(name = "exam_section_question",
-            joinColumns= { @JoinColumn(name = "exam_section_id")},
-            inverseJoinColumns= { @JoinColumn(name = "question_id")})
-    private Set<Question> questions;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="exam_id")
+    private Exam exam;
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="examSection")
+    private Set<Question> questions = new HashSet<>();
 
     public long getId() {
         return id;
@@ -54,8 +56,11 @@ public class ExamSection implements Comparable<ExamSection> {
         this.commandNo = commandNo;
     }
 
-    @Override
-    public int compareTo(ExamSection o) {
-        return this.commandNo - o.commandNo;
+    public Exam getExam() {
+        return exam;
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
     }
 }

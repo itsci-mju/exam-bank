@@ -20,8 +20,8 @@ public class Exam {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="subject_id")
     private Subject subject;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn (name = "exam_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="exam")
+    @OrderBy("commandNo")
     private SortedSet<ExamSection> sections;
 
     public long getId() {
@@ -56,11 +56,11 @@ public class Exam {
         this.subject = subject;
     }
 
-    public SortedSet<ExamSection> getSections() {
-        return sections;
-    }
-
-    public void setSections(SortedSet<ExamSection> sections) {
-        this.sections = sections;
-    }
+//    public SortedSet<ExamSection> getSections() {
+//        return sections;
+//    }
+//
+//    public void setSections(SortedSet<ExamSection> sections) {
+//        this.sections = sections;
+//    }
 }

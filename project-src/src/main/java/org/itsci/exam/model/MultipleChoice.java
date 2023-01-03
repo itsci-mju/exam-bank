@@ -1,21 +1,15 @@
 package org.itsci.exam.model;
 
-import org.itsci.exam.model.Choice;
-import org.itsci.exam.model.Question;
-
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 public class MultipleChoice extends Question {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name="correct_answer_id")
+    @JoinColumn(name = "correct_answer_id")
     private Choice correctAnswer;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn (name = "question_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "multipleChoice")
     private Set<Choice> choices;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name="answer_id")
 
     public Choice getCorrectAnswer() {
         return correctAnswer;

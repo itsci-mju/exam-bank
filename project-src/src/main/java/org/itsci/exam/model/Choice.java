@@ -15,6 +15,9 @@ public class Choice {
     @Column(length = 50, nullable = false, unique = true)
     private String name;
 
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="multiple_choice_id")
+    private MultipleChoice multipleChoice;
     public long getId() {
         return id;
     }
@@ -29,5 +32,13 @@ public class Choice {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public MultipleChoice getMultipleChoice() {
+        return multipleChoice;
+    }
+
+    public void setMultipleChoice(MultipleChoice multipleChoice) {
+        this.multipleChoice = multipleChoice;
     }
 }
