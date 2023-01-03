@@ -3,17 +3,18 @@ package org.itsci.exam.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 @Entity
 @Table(name = "subjects")
-public class Subject {
+public class Subject implements Comparable<Subject> {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private long id;
+    private Long id;
     @Column(length = 50, nullable = false, unique = true)
     private String name;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
@@ -21,11 +22,11 @@ public class Subject {
     @OrderBy("name")
     private SortedSet<Chapter> chapters = new TreeSet<>();
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,5 +44,23 @@ public class Subject {
 
     public void setChapters(SortedSet<Chapter> chapters) {
         this.chapters = chapters;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subject subject = (Subject) o;
+        return id == subject.id && name.equals(subject.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public int compareTo(Subject o) {
+        return name.compareTo(o.getName());
     }
 }

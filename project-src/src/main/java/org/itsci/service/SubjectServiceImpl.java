@@ -1,6 +1,5 @@
 package org.itsci.service;
 
-import org.hibernate.Session;
 import org.itsci.dao.ChapterDao;
 import org.itsci.dao.SubjectDao;
 import org.itsci.exam.model.Chapter;

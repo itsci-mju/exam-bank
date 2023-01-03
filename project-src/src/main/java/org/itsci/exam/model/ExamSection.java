@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
 
 @Entity
 @Table(name = "exam_sections")
@@ -22,7 +23,8 @@ public class ExamSection {
     @JoinColumn(name="exam_id")
     private Exam exam;
     @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="examSection")
-    private Set<Question> questions = new HashSet<>();
+    @OrderBy("chapter")
+    private SortedSet<Question> questions;
 
     public long getId() {
         return id;
@@ -40,11 +42,11 @@ public class ExamSection {
         this.commandText = commandText;
     }
 
-    public Set<Question> getQuestions() {
+    public SortedSet<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Set<Question> questions) {
+    public void setQuestions(SortedSet<Question> questions) {
         this.questions = questions;
     }
 

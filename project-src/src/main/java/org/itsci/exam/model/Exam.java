@@ -56,11 +56,11 @@ public class Exam {
         this.subject = subject;
     }
 
-//    public SortedSet<ExamSection> getSections() {
-//        return sections;
-//    }
-//
-//    public void setSections(SortedSet<ExamSection> sections) {
-//        this.sections = sections;
-//    }
+    public SortedSet<ExamSection> getSections() {
+        return sections;
+    }
+
+    public void setSections(SortedSet<ExamSection> sections) {
+        this.sections = sections;
+    }
 }

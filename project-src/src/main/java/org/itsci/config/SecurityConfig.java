@@ -14,8 +14,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests(configurer -> {
             configurer.antMatchers("/home/**").authenticated()
+                    .antMatchers("/system/**").hasRole("ADMIN")
                     .antMatchers("/member/**").hasRole("MEMBER")
-                    .antMatchers("/system/**").hasRole("ADMIN");
+                    .antMatchers("/teacher/**").hasRole("TEACHER");
         });
 
         http.exceptionHandling(configurer -> {
