@@ -27,6 +27,7 @@ public class ExamController {
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
+
     @GetMapping("/teacher/exam/list")
     public String listShop(Model model) {
         model.addAttribute("title", "Exam List");
@@ -64,5 +65,15 @@ public class ExamController {
         model.addAttribute("exam", exam);
         model.addAttribute("subjects", examService.getSubjects());
         return "teacher/exam-form";
+    }
+
+    @GetMapping("/teacher/exam/{id}/section/list")
+    public String listSection(@PathVariable("id") long id,
+                              Model model) {
+        Exam exam = examService.getExam(id);
+        model.addAttribute("title", "List Section");
+        model.addAttribute("exam", exam);
+        model.addAttribute("sections", exam.getSections());
+        return "teacher/exam-section-list";
     }
 }

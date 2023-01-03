@@ -56,6 +56,10 @@
                 <tr>
                     <td><label></label></td>
                     <td>
+                        <button onclick="window.location.href='${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/list'; return false;"
+                                class="cancel-button">
+                            List sections
+                        </button>
                         <button type="submit" class="save-button">
                             <spring:message code="page.btn.save"/>
                         </button>
