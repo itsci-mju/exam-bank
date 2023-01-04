@@ -1,9 +1,9 @@
-package org.itsci.service;
+package org.itsci.service.exam;
 
-import org.itsci.dao.ChapterDao;
-import org.itsci.dao.SubjectDao;
-import org.itsci.exam.model.Chapter;
-import org.itsci.exam.model.Subject;
+import org.itsci.dao.exam.ChapterDao;
+import org.itsci.dao.exam.SubjectDao;
+import org.itsci.model.exam.Chapter;
+import org.itsci.model.exam.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,6 @@
-package org.itsci.exam.model;
+package org.itsci.model.exam;
 
 import org.itsci.model.Member;
-import org.itsci.model.User;
 
 import javax.persistence.*;
 import java.util.Set;

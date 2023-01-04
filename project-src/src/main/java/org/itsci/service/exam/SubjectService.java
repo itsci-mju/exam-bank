@@ -1,7 +1,7 @@
-package org.itsci.service;
+package org.itsci.service.exam;
 
-import org.itsci.exam.model.Chapter;
-import org.itsci.exam.model.Subject;
+import org.itsci.model.exam.Chapter;
+import org.itsci.model.exam.Subject;
 
 import java.util.List;
 

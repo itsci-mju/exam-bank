@@ -1,32 +1,25 @@
-package org.itsci.exam.model;
+package org.itsci.model.exam;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 @Entity
-@Table(name = "subjects")
-public class Subject implements Comparable<Subject> {
+@Table(name = "chapters")
+public class Chapter implements Comparable<Chapter> {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private Long id;
-    @Column(length = 50, nullable = false, unique = true)
+    private long id;
     private String name;
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn (name = "subject_id")
-    @OrderBy("name")
-    private SortedSet<Chapter> chapters = new TreeSet<>();
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -38,20 +31,12 @@ public class Subject implements Comparable<Subject> {
         this.name = name;
     }
 
-    public SortedSet<Chapter> getChapters() {
-        return chapters;
-    }
-
-    public void setChapters(SortedSet<Chapter> chapters) {
-        this.chapters = chapters;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Subject subject = (Subject) o;
-        return id == subject.id && name.equals(subject.name);
+        Chapter chapter = (Chapter) o;
+        return id == chapter.id && name.equals(chapter.name);
     }
 
     @Override
@@ -60,7 +45,7 @@ public class Subject implements Comparable<Subject> {
     }
 
     @Override
-    public int compareTo(Subject o) {
+    public int compareTo(Chapter o) {
         return name.compareTo(o.getName());
     }
 }

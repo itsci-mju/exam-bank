@@ -1,9 +1,9 @@
-package org.itsci.dao;
+package org.itsci.dao.exam;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.itsci.exam.model.Chapter;
+import org.itsci.model.exam.Chapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

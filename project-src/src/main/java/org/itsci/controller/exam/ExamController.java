@@ -1,8 +1,7 @@
-package org.itsci.controller;
+package org.itsci.controller.exam;
 
-import org.itsci.exam.model.Exam;
-import org.itsci.exam.model.Subject;
-import org.itsci.service.ExamService;
+import org.itsci.model.exam.Exam;
+import org.itsci.service.exam.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.support.ResourceBundleMessageSource;

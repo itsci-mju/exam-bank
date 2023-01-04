@@ -1,15 +1,14 @@
-package org.itsci.service;
+package org.itsci.service.exam;
 
-import org.itsci.dao.ExamDao;
-import org.itsci.dao.SubjectDao;
-import org.itsci.exam.model.Exam;
-import org.itsci.exam.model.Subject;
+import org.itsci.dao.exam.ExamDao;
+import org.itsci.dao.exam.SubjectDao;
+import org.itsci.model.exam.Exam;
+import org.itsci.model.exam.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.SortedSet;
 
 @Service
 public class ExamServiceImpl implements ExamService {

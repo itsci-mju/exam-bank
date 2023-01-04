@@ -1,9 +1,9 @@
-package org.itsci.dao;
+package org.itsci.dao.exam;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.itsci.exam.model.Exam;
+import org.itsci.model.exam.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,24 +13,25 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class ExamDaoImpl implements ExamDao {
+public class SubjectDaoImpl implements SubjectDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public List<Exam> getExams() {
-        Class<Exam> clazz = Exam.class;
-        Query<Exam> query;
-        CriteriaQuery<Exam> criteria;
-        Root<Exam> root;
-        List<Exam> results;
+    public List<Subject> getSubjects() {
+        Class<Subject> clazz = Subject.class;
+        Query<Subject> query;
+        CriteriaQuery<Subject> criteria;
+        Root<Subject> root;
+        List<Subject> results;
 
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         criteria = builder.createQuery(clazz);
         root = criteria.from(clazz);
         criteria.select(root);
+        criteria.orderBy(builder.asc(root.get("name")));
 
         query = session.createQuery(criteria);
         results = query.getResultList();
@@ -38,22 +39,22 @@ public class ExamDaoImpl implements ExamDao {
     }
 
     @Override
-    public void saveExam(Exam exam) {
+    public void saveSubject(Subject subject) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(exam);
+        session.saveOrUpdate(subject);
     }
 
     @Override
-    public Exam getExam(Long id) {
+    public Subject getSubject(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Exam result = session.get(Exam.class, id);
+        Subject result = session.get(Subject.class, id);
         return result;
     }
 
     @Override
-    public void deleteExam(Long id) {
+    public void deleteSubject(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Exam obj = session.get(Exam.class, id);
+        Subject obj = session.get(Subject.class, id);
         session.delete(obj);
         session.flush() ;
     }

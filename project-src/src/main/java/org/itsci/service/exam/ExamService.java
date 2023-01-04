@@ -1,10 +1,9 @@
-package org.itsci.service;
+package org.itsci.service.exam;
 
-import org.itsci.exam.model.Exam;
-import org.itsci.exam.model.Subject;
+import org.itsci.model.exam.Exam;
+import org.itsci.model.exam.Subject;
 
 import java.util.List;
-import java.util.SortedSet;
 
 public interface ExamService {
 

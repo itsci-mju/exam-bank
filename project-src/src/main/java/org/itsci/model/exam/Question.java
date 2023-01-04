@@ -1,4 +1,4 @@
-package org.itsci.exam.model;
+package org.itsci.model.exam;
 
 import org.hibernate.annotations.GenericGenerator;
 

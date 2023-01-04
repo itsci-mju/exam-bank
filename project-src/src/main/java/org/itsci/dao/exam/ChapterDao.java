@@ -1,6 +1,6 @@
-package org.itsci.dao;
+package org.itsci.dao.exam;
 
-import org.itsci.exam.model.Chapter;
+import org.itsci.model.exam.Chapter;
 
 import java.util.List;
 

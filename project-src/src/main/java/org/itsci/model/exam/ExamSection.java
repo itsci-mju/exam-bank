@@ -1,10 +1,8 @@
-package org.itsci.exam.model;
+package org.itsci.model.exam;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.SortedSet;
 
 @Entity
