@@ -1,12 +1,13 @@
 package org.itsci.exam.model;
 
+import org.itsci.model.Member;
 import org.itsci.model.User;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Teacher extends User {
+public class Teacher extends Member {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(name = "teacher_subject",
             joinColumns= { @JoinColumn(name = "teacher_id")},

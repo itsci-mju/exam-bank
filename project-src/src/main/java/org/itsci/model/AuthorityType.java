@@ -5,8 +5,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import java.util.*;
 
 public enum AuthorityType {
+    ROLE_ADMIN("ROLE_ADMIN"),
     ROLE_MEMBER("ROLE_MEMBER"),
-    ROLE_ADMIN("ROLE_ADMIN");
+    ROLE_TEACHER("ROLE_TEACHER");
 
     private static List<String> authorities = null;
     private final String role;
