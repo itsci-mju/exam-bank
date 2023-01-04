@@ -15,7 +15,7 @@ public class Exam {
     private long id;
     @Column(length = 50, nullable = false, unique = true)
     private String code;
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String name;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="subject_id")
