@@ -1,6 +1,6 @@
 package org.itsci.controller.exam;
 
-import org.itsci.model.exam.Exam;
+import org.itsci.model.exam.*;
 import org.itsci.service.exam.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -74,5 +74,148 @@ public class ExamController {
         model.addAttribute("exam", exam);
         model.addAttribute("sections", exam.getSections());
         return "teacher/exam-section-list";
+    }
+
+    @GetMapping("/teacher/exam/{exam_id}/section/create")
+    public String createChapters(@PathVariable("exam_id") long exam_id, Model model) {
+        model.addAttribute("title", "Create Section");
+        model.addAttribute("exam_id", exam_id);
+        model.addAttribute("section", new ExamSection());
+        return "teacher/exam-section-form";
+    }
+
+    @PostMapping("/teacher/exam/{id}/section/save")
+    public String saveChapters(@PathVariable("id") long id,
+                               @ModelAttribute("section") ExamSection section,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("title", messageSource.getMessage("page.error", null, Locale.getDefault()));
+            model.addAttribute("section", section);
+            return "teacher/exam-section-form";
+        } else {
+            examService.addExamSection(id, section);
+            return "redirect:/teacher/exam/" + id + "/section/list";
+        }
+    }
+
+    @GetMapping("/teacher/exam/{exam_id}/section/{section_id}/update")
+    public String updateSection(@PathVariable("exam_id") long exam_id,
+                                @PathVariable("section_id") long section_id,
+                                Model model) {
+        Exam exam = examService.getExam(exam_id);
+        ExamSection section = examService.getExamSection(section_id);
+        model.addAttribute("title", "Update Section");
+        model.addAttribute("exam_id", exam.getId());
+        model.addAttribute("section", section);
+        return "teacher/exam-section-update";
+    }
+
+    @PostMapping("/teacher/exam/{exam_id}/section/update")
+    public String processUpdateSection(@PathVariable("exam_id") long exam_id,
+                                       @ModelAttribute("section") ExamSection section,
+                                       BindingResult bindingResult,
+                                       Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("title", messageSource.getMessage("page.error", null, Locale.getDefault()));
+            model.addAttribute("section", section);
+            return "teacher/exam-section-form";
+        } else {
+            ExamSection sectionDb = examService.getExamSection(section.getId());
+            sectionDb.setCommandNo(section.getCommandNo());
+            sectionDb.setCommandText(section.getCommandText());
+            examService.saveSection(sectionDb);
+            return "redirect:/teacher/exam/" + exam_id + "/section/list";
+        }
+    }
+
+    @GetMapping("/teacher/exam/{exam_id}/section/{section_id}/add/question-page")
+    public String addQuestionForm(@PathVariable("exam_id") long exam_id,
+                                  @PathVariable("section_id") long section_id,
+                                  Model model) {
+        Exam exam = examService.getExam(exam_id);
+        ExamSection section = examService.getExamSection(section_id);
+        model.addAttribute("exam", exam);
+        model.addAttribute("subject_id", section_id);
+        model.addAttribute("questions", section.getQuestions());
+        return "teacher/exam-section-question-list";
+    }
+
+    @GetMapping("/teacher/exam/{exam_id}/section/{section_id}/add/question")
+    public String addQuestion(@PathVariable("exam_id") long exam_id,
+                              @PathVariable("section_id") long section_id,
+                              Model model) {
+        Exam exam = examService.getExam(exam_id);
+        model.addAttribute("title", "Create Multiple Choice");
+        model.addAttribute("exam", exam);
+        model.addAttribute("section_id", section_id);
+        model.addAttribute("chapters", exam.getSubject().getChapters());
+        model.addAttribute("levels", LevelEnum.getLevelOptions(messageSource, Locale.getDefault()));
+        model.addAttribute("multiChoiceQuestion", new MultipleChoice());
+        return "teacher/exam-section-multi_choice-form";
+    }
+
+    @PostMapping("/teacher/exam/{exam_id}/section/{section_id}/add/question")
+    public String processAddQuestion(@PathVariable("exam_id") long exam_id,
+                                     @PathVariable("section_id") long section_id,
+                                     @ModelAttribute("multipleChoice") MultipleChoice multipleChoice,
+                                     BindingResult bindingResult,
+                                     Model model) {
+        Exam exam = examService.getExam(exam_id);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("title", messageSource.getMessage("page.error", null, Locale.getDefault()));
+            model.addAttribute("exam_id", exam_id);
+            model.addAttribute("section_id", section_id);
+            model.addAttribute("chapters", exam.getSubject().getChapters());
+            model.addAttribute("multiChoiceQuestion", multipleChoice);
+            return "teacher/exam-section-multi_choice-form";
+        } else {
+            ExamSection sectionDb = examService.getExamSection(section_id);
+            multipleChoice.setSubject(exam.getSubject());
+            sectionDb.getQuestions().add(multipleChoice);
+            examService.saveSection(sectionDb);
+            return "redirect:/teacher/exam/" + exam_id + "/section/" + section_id + "/add/question-page";
+        }
+    }
+
+    @GetMapping("/teacher/exam/{exam_id}/section/{section_id}/question/{question_id}/update")
+    public String updateQuestion(@PathVariable("exam_id") long exam_id,
+                                 @PathVariable("section_id") long section_id,
+                                 @PathVariable("question_id") long question_id,
+                                 Model model) {
+        Exam exam = examService.getExam(exam_id);
+        MultipleChoice multipleChoice = (MultipleChoice) examService.getQuestion(question_id);
+        model.addAttribute("title", "Update Multiple Choice");
+        model.addAttribute("exam", exam);
+        model.addAttribute("section_id", section_id);
+        model.addAttribute("chapters", exam.getSubject().getChapters());
+        model.addAttribute("levels", LevelEnum.getLevelOptions(messageSource, Locale.getDefault()));
+        model.addAttribute("multiChoiceQuestion", multipleChoice);
+        return "teacher/exam-section-multi_choice-update";
+    }
+
+    @PostMapping("/teacher/exam/{exam_id}/section/{section_id}/update/question")
+    public String processUpdateQuestion(@PathVariable("exam_id") long exam_id,
+                                     @PathVariable("section_id") long section_id,
+                                     @ModelAttribute("multipleChoice") MultipleChoice multipleChoice,
+                                     BindingResult bindingResult,
+                                     Model model) {
+        Exam exam = examService.getExam(exam_id);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("title", messageSource.getMessage("page.error", null, Locale.getDefault()));
+            model.addAttribute("exam_id", exam_id);
+            model.addAttribute("section_id", section_id);
+            model.addAttribute("chapters", exam.getSubject().getChapters());
+            model.addAttribute("multiChoiceQuestion", multipleChoice);
+            return "teacher/exam-section-multi_choice-form";
+        } else {
+            MultipleChoice questionDb = (MultipleChoice) examService.getQuestion(multipleChoice.getId());
+            questionDb.setQuestion(multipleChoice.getQuestion());
+            questionDb.setPoint(multipleChoice.getPoint());
+            questionDb.setLevel(multipleChoice.getLevel());
+            questionDb.setChapterId(multipleChoice.getChapterId());
+            examService.saveQuestion(questionDb);
+            return "redirect:/teacher/exam/" + exam_id + "/section/" + section_id + "/add/question-page";
+        }
     }
 }

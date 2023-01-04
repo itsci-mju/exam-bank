@@ -12,7 +12,7 @@ public class Quiz {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private long id;
+    private Long id;
     private int term;
     private int year;
     private Date date;
@@ -20,11 +20,11 @@ public class Quiz {
     @JoinColumn(name="exam_id")
     private Exam exam;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

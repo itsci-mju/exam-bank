@@ -11,18 +11,18 @@ public class Choice {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private long id;
+    private Long id;
     @Column(length = 50, nullable = false, unique = true)
     private String name;
 
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="multiple_choice_id")
     private MultipleChoice multipleChoice;
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

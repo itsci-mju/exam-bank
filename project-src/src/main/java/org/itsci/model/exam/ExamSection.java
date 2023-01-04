@@ -3,32 +3,35 @@ package org.itsci.model.exam;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 
 @Entity
 @Table(name = "exam_sections")
-public class ExamSection {
+public class ExamSection implements Comparable<ExamSection> {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private long id;
-    @Column(length = 50, nullable = false, unique = true)
+    private Long id;
+    @Column(length = 50, nullable = false)
     private int commandNo;
-    @Column(length = 50, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String commandText;
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="exam_id")
     private Exam exam;
-    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="examSection")
-    @OrderBy("chapter")
-    private SortedSet<Question> questions;
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinColumn (name = "exam_section_id")
+    @OrderBy("chapterId")
+    private List<Question> questions;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,11 +43,11 @@ public class ExamSection {
         this.commandText = commandText;
     }
 
-    public SortedSet<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(SortedSet<Question> questions) {
+    public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 
@@ -62,5 +65,25 @@ public class ExamSection {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ExamSection that = (ExamSection) o;
+        return id == that.id && commandNo == that.commandNo && commandText.equals(that.commandText);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, commandNo, commandText);
+    }
+
+    @Override
+    public int compareTo(ExamSection o) {
+        String str = commandNo + commandText;
+        String str2 = o.getCommandNo() + o.getCommandText();
+        return str.compareTo(str2);
     }
 }

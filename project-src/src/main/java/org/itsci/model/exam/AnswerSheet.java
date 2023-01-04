@@ -11,7 +11,7 @@ public class AnswerSheet {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private long id;
+    private Long id;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn(name="student_id")
     private Student student;
@@ -25,11 +25,11 @@ public class AnswerSheet {
     @JoinColumn(name="question_id")
     private Question question;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

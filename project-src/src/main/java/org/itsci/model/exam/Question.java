@@ -3,35 +3,31 @@ package org.itsci.model.exam;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "questions")
-public class Question {
+public class Question implements Comparable<Question> {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @GenericGenerator(name = "increment", strategy = "increment")
-    private long id;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="subject_id")
     private Subject subject;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinColumn(name="chapter_id")
-    private Chapter chapter;
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="company_id")
-    private ExamSection examSection;
+    private Long chapterId;
     private String level;
     private String status;
     private String question;
     private String questionImage;
     private double point;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,12 +39,12 @@ public class Question {
         this.subject = subject;
     }
 
-    public Chapter getChapter() {
-        return chapter;
+    public Long getChapterId() {
+        return chapterId;
     }
 
-    public void setChapter(Chapter chapter) {
-        this.chapter = chapter;
+    public void setChapterId(Long chapterId) {
+        this.chapterId = chapterId;
     }
 
     public String getLevel() {
@@ -91,11 +87,8 @@ public class Question {
         this.point = point;
     }
 
-    public ExamSection getExamSection() {
-        return examSection;
-    }
-
-    public void setExamSection(ExamSection examSection) {
-        this.examSection = examSection;
+    @Override
+    public int compareTo(Question o) {
+        return chapterId.compareTo(o.chapterId);
     }
 }

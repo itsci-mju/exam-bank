@@ -17,28 +17,36 @@
 <div class="container">
     <jsp:include page="/WEB-INF/view/layouts/nav.jsp"/>
 
-    <button onclick="window.location.href='${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/create'; return false;"
+    <button onclick="window.location.href='${pageContext.request.contextPath}/teacher/exam/${exam_id}/section/${section_id}/add/question'; return false;"
             class="add-button">
-        Create new exam
+        Create new question
     </button>
 
     <table class="table-bordered">
         <thead>
         <tr>
-            <th>Command No.</th>
-            <th>Command</th>
+            <th>Id.</th>
+            <th>Subject</th>
+            <th>Question</th>
+            <th>Level</th>
+            <th>Chapter</th>
+            <th>Point</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="obj" items="${sections}">
+        <c:forEach var="obj" items="${questions}" varStatus="status">
             <tr>
-                <td><a href="${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/${obj.id}/update">${obj.commandNo}</a></td>
-                <td>${obj.commandText}</td>
+                <td>${status.index+1}</td>
+                <td><a href="${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/${section_id}/question/${obj.id}/update">${exam.subject.name}</a></td>
+                <td>${obj.question}</td>
+                <td>${obj.level}</td>
+                <td>${obj.chapterId}</td>
+                <td>${obj.point}</td>
                 <td>
-                    <button onclick="window.location.href='${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/${obj.id}/add/question-page'; return false;"
+                    <button onclick="window.location.href='${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/${section_id}/question/${obj.id}/add/choice'; return false;"
                             class="cancel-button">
-                        List question
+                        Add choice
                     </button>
                 </td>
             </tr>
