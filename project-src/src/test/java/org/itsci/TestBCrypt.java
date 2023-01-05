@@ -10,7 +10,7 @@ public class TestBCrypt {
     public static void main(String[] args) throws IOException, InvalidFormatException {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String encrypted = bCryptPasswordEncoder.encode("1234");
-        System.out.println("Encrypt: " + encrypted);
+        System.out.println("Encrypt: {bcrypt}" + encrypted);
 //        CreateWordDocument.test();
     }
 }

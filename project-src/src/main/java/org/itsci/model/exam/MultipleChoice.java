@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 public class MultipleChoice extends Question {
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "correct_answer_id")
     private Choice correctAnswer;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "multipleChoice")

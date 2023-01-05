@@ -6,3 +6,12 @@ h1, h2, h3, ul, ol, li {
 h1, ul, ol {
     margin: 10px 0px 10px 0;
 }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-bordered table,
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid black;
+}

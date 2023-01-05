@@ -52,11 +52,11 @@
                 <tr>
                     <td><label>Chapter</label></td>
                     <td>
-                        <form:select path="chapterId">
+                        <form:select path="chapter.id">
                             <form:option value="" label="-- กรุณาเลือกรายการ --"/>
                             <form:options items="${chapters}" itemLabel="name" itemValue="id"/>
                         </form:select>
-                        <form:errors path="chapterId" cssClass="error"/>
+                        <form:errors path="chapter.id" cssClass="error"/>
                     </td>
                 </tr>
                 <tr>
@@ -67,6 +67,16 @@
                             <form:options items="${levels}"/>
                         </form:select>
                         <form:errors path="level" cssClass="error"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Correct Answer</label></td>
+                    <td>
+                        <form:select path="correctAnswer.id">
+                            <form:option value="" label="-- กรุณาเลือกรายการ --"/>
+                            <form:options items="${choices}" itemLabel="name" itemValue="id"/>
+                        </form:select>
+                        <form:errors path="correctAnswer.id" cssClass="error"/>
                     </td>
                 </tr>
                 <tr>

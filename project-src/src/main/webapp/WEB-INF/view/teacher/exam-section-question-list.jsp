@@ -31,6 +31,7 @@
             <th>Level</th>
             <th>Chapter</th>
             <th>Point</th>
+            <th>Correct Answer</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -40,9 +41,10 @@
                 <td>${status.index+1}</td>
                 <td><a href="${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/${section_id}/question/${obj.id}/update">${exam.subject.name}</a></td>
                 <td>${obj.question}</td>
-                <td><spring:message code="${obj.level}"/></td>
-                <td>${obj.chapterId}</td>
+                <td><spring:message code="enum.level_enum.${obj.level}"/></td>
+                <td>${obj.chapter.name}</td>
                 <td>${obj.point}</td>
+                <td>${obj.correctAnswer.name}</td>
                 <td>
                     <button onclick="window.location.href='${pageContext.request.contextPath}/teacher/exam/${exam.id}/section/${section_id}/question/${obj.id}/add/choice'; return false;"
                             class="cancel-button">

@@ -189,6 +189,7 @@ public class ExamController {
         model.addAttribute("exam", exam);
         model.addAttribute("section_id", section_id);
         model.addAttribute("chapters", exam.getSubject().getChapters());
+        model.addAttribute("choices", multipleChoice.getChoices());
         model.addAttribute("levels", LevelEnum.getLevelOptions(messageSource, Locale.getDefault()));
         model.addAttribute("multiChoiceQuestion", multipleChoice);
         return "teacher/exam-section-multi_choice-update";
@@ -213,8 +214,48 @@ public class ExamController {
             questionDb.setQuestion(multipleChoice.getQuestion());
             questionDb.setPoint(multipleChoice.getPoint());
             questionDb.setLevel(multipleChoice.getLevel());
-            questionDb.setChapterId(multipleChoice.getChapterId());
+            questionDb.setChapter(multipleChoice.getChapter());
+            questionDb.setCorrectAnswer(multipleChoice.getCorrectAnswer());
             examService.saveQuestion(questionDb);
+            return "redirect:/teacher/exam/" + exam_id + "/section/" + section_id + "/add/question-page";
+        }
+    }
+
+    @GetMapping("/teacher/exam/{exam_id}/section/{section_id}/question/{question_id}/add/choice")
+    public String addChoice(@PathVariable("exam_id") long exam_id,
+                            @PathVariable("section_id") long section_id,
+                            @PathVariable("question_id") long question_id,
+                            Model model) {
+        MultipleChoice multipleChoice = (MultipleChoice) examService.getQuestion(question_id);
+        model.addAttribute("title", "Add Choice");
+        model.addAttribute("exam_id", exam_id);
+        model.addAttribute("section_id", section_id);
+        model.addAttribute("question_id", question_id);
+        model.addAttribute("choices", multipleChoice.getChoices());
+        model.addAttribute("choice", new Choice());
+        return "teacher/exam-section-multi_choice-choice-form";
+    }
+
+    @PostMapping("/teacher/exam/{exam_id}/section/{section_id}/question/{question_id}/add/choice")
+    public String processAddChoice(@PathVariable("exam_id") long exam_id,
+                                   @PathVariable("section_id") long section_id,
+                                   @PathVariable("question_id") long question_id,
+                                   @ModelAttribute("choice") Choice choice,
+                                   BindingResult bindingResult,
+                                   Model model) {
+        MultipleChoice multipleChoice = (MultipleChoice) examService.getQuestion(question_id);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("title", messageSource.getMessage("page.error", null, Locale.getDefault()));
+            model.addAttribute("exam_id", exam_id);
+            model.addAttribute("section_id", section_id);
+            model.addAttribute("question_id", question_id);
+            model.addAttribute("choices", multipleChoice.getChoices());
+            model.addAttribute("choice", choice);
+            return "teacher/exam-section-multi_choice-choice-form";
+        } else {
+            multipleChoice.getChoices().add(choice);
+            choice.setMultipleChoice(multipleChoice);
+            examService.saveQuestion(multipleChoice);
             return "redirect:/teacher/exam/" + exam_id + "/section/" + section_id + "/add/question-page";
         }
     }

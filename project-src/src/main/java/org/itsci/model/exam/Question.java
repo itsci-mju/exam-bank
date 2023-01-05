@@ -16,7 +16,9 @@ public class Question implements Comparable<Question> {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="subject_id")
     private Subject subject;
-    private Long chapterId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="chapter_id")
+    private Chapter chapter;
     private String level;
     private String status;
     private String question;
@@ -37,14 +39,6 @@ public class Question implements Comparable<Question> {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
-    }
-
-    public Long getChapterId() {
-        return chapterId;
-    }
-
-    public void setChapterId(Long chapterId) {
-        this.chapterId = chapterId;
     }
 
     public String getLevel() {
@@ -87,8 +81,16 @@ public class Question implements Comparable<Question> {
         this.point = point;
     }
 
+    public Chapter getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
+    }
+
     @Override
     public int compareTo(Question o) {
-        return chapterId.compareTo(o.chapterId);
+        return chapter.compareTo(o.chapter);
     }
 }

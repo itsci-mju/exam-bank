@@ -52,11 +52,11 @@
                 <tr>
                     <td><label>Chapter</label></td>
                     <td>
-                        <form:select path="chapterId">
+                        <form:select path="chapter.id">
                             <form:option value="" label="-- กรุณาเลือกรายการ --"/>
                             <form:options items="${chapters}" itemLabel="name" itemValue="id"/>
                         </form:select>
-                        <form:errors path="chapterId" cssClass="error"/>
+                        <form:errors path="chapter.id" cssClass="error"/>
                     </td>
                 </tr>
                 <tr>

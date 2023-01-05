@@ -146,7 +146,7 @@ public class MemberController {
             if (dbMember == null) {
                 dbMember = new Member();
                 BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-                String encrypted = bCryptPasswordEncoder.encode(member.getUsername().trim());
+                String encrypted = bCryptPasswordEncoder.encode(member.getPassword().trim());
                 dbMember.getLogin().setPassword("{bcrypt}" + encrypted);
             }
 

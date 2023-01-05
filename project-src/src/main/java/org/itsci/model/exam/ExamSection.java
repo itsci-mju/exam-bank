@@ -24,7 +24,7 @@ public class ExamSection implements Comparable<ExamSection> {
     private Exam exam;
     @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinColumn (name = "exam_section_id")
-    @OrderBy("chapterId")
+    @OrderBy("chapter")
     private List<Question> questions;
 
     public Long getId() {

@@ -15,7 +15,7 @@ public class Choice {
     @Column(length = 50, nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="multiple_choice_id")
     private MultipleChoice multipleChoice;
     public Long getId() {
